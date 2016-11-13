@@ -1,44 +1,51 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-
-typedef struct Node{
-    struct Node *previous;
-    int value;
-    struct Node *next;
-} Node;
-
-typedef struct {
-    Node *first;
-    Node *last;
-} List;
-
-void *ec_malloc(uint16_t size);
-void error(char *message);
-List *init();
-void print_list(List *list);
-void add_beginning(List *list, int val);
-void add_end(List *list, int val);
+#include "List.h"
 
 void main(void)
 {
+    // Initiate the list 
     List *list = init();
-    add_beginning(list, 5);
-    add_beginning(list, 7);
-    add_beginning(list, 8);
-    add_end(list, 10);
+    
+    // Add node at the beginning
+    add_node(list, 5, NULL);
+
+    // Add node at the end
+    add_node(list, 7, list->last);
+
+    // Print it
     print_list(list);
+}
+
+void add_node(List *list, int val, Node *node)
+{
+    // If the given node is the last node
+    if (list->last == node) 
+    {
+        add_end(list, val);
+    }
+    else if (node == NULL)
+    {  
+        add_beginning(list, val);
+    }
+    else // Add the node between two existing nodes
+    {
+        Node *new_node = (Node *)ec_malloc(sizeof(Node));
+        new_node->value = val;
+        new_node->previous = node;
+        new_node->next = node->next;
+        node->next = new_node;
+    }
 }
 
 void add_end(List *list, int val)
 {
     // If it's the first node
     if (list->first == NULL)
+    {
         add_beginning(list, val);
+    }
     else
     {
-        Node *new_node = (Node *)ec_malloc(sizeof(List));
+        Node *new_node = (Node *)ec_malloc(sizeof(Node));
         new_node->value = val;
         new_node->previous = list->last;
         new_node->next = NULL;
@@ -50,7 +57,7 @@ void add_end(List *list, int val)
 void add_beginning(List *list, int val)
 {
     Node *first_node = list->first;
-    Node *new_node = (Node *)ec_malloc(sizeof(List));
+    Node *new_node = (Node *)ec_malloc(sizeof(Node));
     new_node->value = val;
     new_node->previous = NULL;
 
@@ -60,7 +67,8 @@ void add_beginning(List *list, int val)
         list->first = new_node;
         new_node->next = first_node;
         first_node->previous = new_node;
-    } else
+    } 
+    else
     {
         new_node->next = NULL;
         list->first = new_node;
@@ -93,7 +101,9 @@ void *ec_malloc(uint16_t size)
     void *ptr;
     ptr = malloc(size);
     if (ptr == NULL)
+    {
         error("in ec_malloc() on memory allocation.");
+    }
 
     return ptr;
 
