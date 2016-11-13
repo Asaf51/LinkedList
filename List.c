@@ -4,14 +4,14 @@
 #include <string.h>
 
 typedef struct Node{
-	int value;
-	struct Node *next;
-	struct Node *previous;
+    struct Node *previous;
+    int value;
+    struct Node *next;
 } Node;
 
 typedef struct {
-	Node *first;
-	Node *last;
+    Node *first;
+    Node *last;
 } List;
 
 void *ec_malloc(uint16_t size);
@@ -20,59 +20,71 @@ List *init();
 void print_list(List *list);
 void add_end(List list, int val);
 
-int main()
+void main(void)
 {
-	List *list = init();
-	//add_end(list, 5);
-	//add_end(list, 6);
-	//add_end(list, 7);
-	print_list(list);
+    List *list = init();
+    add_beginning(list, 5);
+    add_beginning(list, 7)
+    print_list(list);
 }
 
-void add_end(List list, int val)
+void add_beginning(List list, int val)
 {
-	Node *last_node = list->last;
-	Node* new_node = (Node *)ec_malloc(sizeof(Node));
-	new_node->value = val;
-	last_node->next = new_node;
-	new_node->next = NULL;
-	new_node->previous = last_node;
+    Node *first_node = list->first;
+    Node *new_node = (Node *)ec_malloc(sizeof(List));
+    new_node->value = val;
+    new_node->previous = NULL;
+
+    // If it's not the first node in the list
+    if (first_node != NULL)
+    {
+        list->first = new_node;
+        new_node->next = first_node;
+        first_node->previous = new_node;
+    } else
+    {
+        new_node->next = NULL;
+        list->first = new_node;
+    }
 }
 
 void print_list(List *list)
 {
-	Node *current = list->first;
-	while (current != NULL)
-	{
-		printf("%d -> ", current->value);
-		current = (Node *)current->next;
-	}
+    Node *current = list->first;
+    while (current != NULL)
+    {
+        printf("%d -> ", current->value);
+        current = (Node *)current->next;
+    }
 }
 
+// Allocationg and initiate a new list and returns a list pointer.
 List *init()
 {
-	List *list = (List *)ec_malloc(sizeof(List));
-	list->first = NULL;
-	list->last = NULL;
+    List *list = (List *)ec_malloc(sizeof(List));
+    list->first = NULL;
+    list->last = NULL;
 }
 
+// Error Check malloc, gets size and return the pointer.
+// If there is a problem it calls error() 
 void *ec_malloc(uint16_t size)
 {
-	void *ptr;
-	ptr = malloc(size);
-	if (ptr == NULL)
-		error("in ec_malloc() on memory allocation.");
+    void *ptr;
+    ptr = malloc(size);
+    if (ptr == NULL)
+        error("in ec_malloc() on memory allocation.");
 
-	return ptr;
+    return ptr;
 
 }
 
 void error(char *message)
 {
-	char error_message[100];
+    char error_message[100];
 
-	strcpy(error_message, "[!!] Fatal Error ");
-	strncat(error_message, message, 83);
-	perror(error_message);
-	exit(-1);
+    strcpy(error_message, "[!!] Fatal Error ");
+    strncat(error_message, message, 83);
+    perror(error_message);
+    exit(-1);
 }
