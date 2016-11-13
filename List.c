@@ -4,7 +4,7 @@ void main(void)
 {
     // Initiate the list 
     List *list = init();
-    
+
     int i;
 
     for (i = 1; i <= 10; ++i)
@@ -16,13 +16,44 @@ void main(void)
 
     for (i = 1; i < 4; ++i)
     {
-        curr = curr->next;
+        curr = next(curr);
     }
 
     remove_node(list, curr);
 
     // And print it
     print_list(list);
+
+    destroy(list);
+
+    printf("%d\n", get_length(list));
+}
+
+void destroy(List *list)
+{
+    Node *curr_node = get_first(list);
+    while(next(curr_node) != NULL)
+    {
+        curr_node = next(curr_node);
+        free(previous(curr_node));
+    }
+
+    free(list);
+}
+
+Node *next(Node *node)
+{
+    return node->next;
+}
+
+Node *previous(Node *node)
+{
+    return node->previous;
+}
+
+int get_length(List *list)
+{
+    return list->length;
 }
 
 Node *get_first(List *list)
@@ -64,6 +95,8 @@ int remove_node(List *list, Node *node)
         next_node->previous = previous_node;
         previous_node->next = next_node;
     }
+
+    list->length--;
 }
 
 void add_node(List *list, int val, Node *node)
@@ -84,6 +117,7 @@ void add_node(List *list, int val, Node *node)
         new_node->previous = node;
         new_node->next = node->next;
         node->next = new_node;
+        list->length++;
     }
 }
 
@@ -102,6 +136,7 @@ void add_end(List *list, int val)
         new_node->next = NULL;
         list->last->next = new_node;
         list->last = new_node;
+        list->length++;
     }
 }
 
@@ -118,23 +153,31 @@ void add_beginning(List *list, int val)
         list->first = new_node;
         new_node->next = first_node;
         first_node->previous = new_node;
+        list->length++;
     } 
     else
     {
         new_node->next = NULL;
         list->first = new_node;
         list->last = new_node;
+        list->length++;
     }
 }
 
 void print_list(List *list)
 {
-    Node *current = list->first;
+    Node *current = get_first(list);
     while (current != NULL)
     {
-        printf("%d -> ", current->value);
-        current = (Node *)current->next;
+        printf("%d -> ", value(current));
+        current = next(current);
     }
+    printf("\n");
+}
+
+int value(Node *node)
+{
+    return node->value;
 }
 
 // Allocationg and initiate a new list and returns a list pointer.
