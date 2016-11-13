@@ -18,17 +18,18 @@ void *ec_malloc(uint16_t size);
 void error(char *message);
 List *init();
 void print_list(List *list);
-void add_end(List list, int val);
+void add_beginning(List *list, int val);
 
 void main(void)
 {
     List *list = init();
     add_beginning(list, 5);
-    add_beginning(list, 7)
+    add_beginning(list, 7);
+    add_beginning(list, 8);
     print_list(list);
 }
 
-void add_beginning(List list, int val)
+void add_beginning(List *list, int val)
 {
     Node *first_node = list->first;
     Node *new_node = (Node *)ec_malloc(sizeof(List));
@@ -53,7 +54,7 @@ void print_list(List *list)
     Node *current = list->first;
     while (current != NULL)
     {
-        printf("%d -> ", current->value);
+        printf("<- %d -> ", current->value);
         current = (Node *)current->next;
     }
 }
