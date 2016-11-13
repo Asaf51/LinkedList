@@ -5,14 +5,65 @@ void main(void)
     // Initiate the list 
     List *list = init();
     
-    // Add node at the beginning
-    add_node(list, 5, NULL);
+    int i;
 
-    // Add node at the end
-    add_node(list, 7, list->last);
+    for (i = 1; i <= 10; ++i)
+    {
+        add_end(list, i);
+    }
 
-    // Print it
+    Node *curr = get_first(list);
+
+    for (i = 1; i < 4; ++i)
+    {
+        curr = curr->next;
+    }
+
+    remove_node(list, curr);
+
+    // And print it
     print_list(list);
+}
+
+Node *get_first(List *list)
+{
+    return list->first;
+}
+
+Node *get_last(List *list)
+{
+    return list->last;
+}
+
+int remove_node(List *list, Node *node)
+{
+    int value = node->value;
+
+    if(list->first == node)
+    {
+        Node *next_node = node->next;
+        free(node);
+
+        list->first = next_node;
+        next_node->previous = NULL;
+
+    }
+    else if(list->last == node)
+    {
+        Node *previous_node = node->previous;
+
+        previous_node->next = NULL;
+        list->last = previous_node;
+    } 
+    else
+    {
+        Node *previous_node = node->previous;
+        Node *next_node = node->next;
+        free(node);
+
+        next_node->previous = previous_node;
+        previous_node->next = next_node;
+    }
 }
 
 void add_node(List *list, int val, Node *node)
@@ -106,7 +157,6 @@ void *ec_malloc(uint16_t size)
     }
 
     return ptr;
-
 }
 
 void error(char *message)

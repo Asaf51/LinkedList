@@ -21,3 +21,6 @@ void print_list(List *list);
 void add_beginning(List *list, int val);
 void add_end(List *list, int val);
 void add_node(List *list, int val, Node *node);
+int remove_node(List *list, Node *node);
+Node *get_first(List *list);
+Node *get_last(List *list);
