@@ -15,7 +15,7 @@ list_t *list = list_init();
 ```
 
 Add new node to the list:
-```
+```c
 // add between 2 exsiting nodes
 list->add_node(list, value, previous_node);
 
@@ -37,7 +37,7 @@ list->destroy(list);
 ```
 
 ### More functions
-```
+```c
 // returns the first node by a given list
 get_first(list);
 
@@ -61,5 +61,4 @@ get_sum(list);
 
 // print the list
 print_list(list);
-
 ```
