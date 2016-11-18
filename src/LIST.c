@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "../headers/COMMON_exports.h"
-#include "../headers/LIST_exports.h"
-#include "../headers/LIST_internals.h"
+#include "COMMON_exports.h"
+#include "LIST_exports.h"
+#include "LIST_internals.h"
 
 int32_t get_sum(list_t *list)
 {
