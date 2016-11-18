@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include "COMMON_exports.h"
+#include "../headers/COMMON_exports.h"
 
 void *ec_malloc(uint16_t size)
 {
